@@ -1,0 +1,54 @@
+/* index.css */
+
+/* Reset và cấu hình cơ bản */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Cài đặt font, màu nền và line-height chung cho body */
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #f0f0f0;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Thiết lập container chung cho layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Cài đặt chung cho hình ảnh */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Thiết lập cho liên kết */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Cài đặt chung cho các button */
+button {
+  cursor: pointer;
+  border: none;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+/* Một số lớp tiện ích */
+.text-center {
+  text-align: center;
+}
