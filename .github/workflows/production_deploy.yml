@@ -38,11 +38,11 @@ jobs:
 
             # 2) Lấy code mới nhất
             cd ~
-            if [ ! -d "Coffe-web" ]; then
+            if [ ! -d "coffe-webite-project" ]; then
               git clone --branch main https://github.com/imLeHuyHoang/coffee-website-project.git
-              cd Coffe-web
+              cd coffee-website-project
             else
-              cd Coffe-web
+              cd coffee-website-project
               git fetch origin
               git checkout main
               git pull origin main
