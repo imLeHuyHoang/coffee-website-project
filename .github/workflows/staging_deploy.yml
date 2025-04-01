@@ -39,7 +39,7 @@ jobs:
             # 2) Lấy code mới nhất 
             cd ~
             if [ ! -d "Coffe-web" ]; then
-              git clone --branch staging https://github.com/xxx_user_xxx/Coffe-web.git
+              git clone --branch staging https://github.com/imLeHuyHoang/coffee-website-project.git
               cd Coffe-web
             else
               cd Coffe-web
