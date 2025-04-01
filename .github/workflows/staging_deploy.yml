@@ -1,0 +1,70 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  deploy_staging:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.EC2_STAGING_SSH_PRIVATE_KEY }}
+
+      - name: Deploy to EC2 Staging
+        env:
+          EC2_STAGING_IP: ${{ secrets.EC2_STAGING_IP }}
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_STAGING_IP }} << EOF
+
+            # 1) Cài đặt Docker & Docker Compose nếu chưa có
+            if ! command -v docker &> /dev/null; then
+              echo "Docker not found, installing..."
+              sudo apt-get update
+              sudo apt-get install -y docker.io
+            fi
+
+            if ! command -v docker-compose &> /dev/null; then
+              echo "Docker Compose not found, installing..."
+              sudo apt-get install -y docker-compose
+            fi
+
+            # 2) Lấy code mới nhất 
+            cd ~
+            if [ ! -d "coffee-website-project" ]; then
+              git clone --branch staging https://github.com/imLeHuyHoang/coffee-website-project.git
+              cd coffee-website-project
+            else
+              cd coffee-website-project
+              git fetch origin
+              git checkout staging
+              git pull origin staging
+            fi
+
+            # 3) Cài Node.js v20
+            if ! command -v node &> /dev/null; then
+              echo "Node.js not found, installing..."
+              curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+              sudo apt-get install -y nodejs
+            fi
+
+            # 4) Cài đặt các phụ thuộc
+            npm install
+
+            # 5) Chạy test
+            CI=true npm run test
+
+            # 6) Dừng & xoá container cũ
+            sudo docker-compose down --rmi all --volumes --remove-orphans || true
+
+            # 7) Build & chạy lại container
+            sudo docker-compose up -d --build
+
+          EOF

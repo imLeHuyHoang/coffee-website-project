@@ -1,0 +1,57 @@
+name: Deploy Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy_production:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.EC2_PRODUCTION_SSH_PRIVATE_KEY }}
+
+      - name: Deploy to EC2 Production
+        env:
+          EC2_PRODUCTION_IP: ${{ secrets.EC2_PRODUCTION_IP }}
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PRODUCTION_IP }} << EOF
+
+            # 1) Kiểm tra Docker & Docker Compose, nếu chưa có thì cài
+            if ! command -v docker &> /dev/null; then
+              echo "Docker not found, installing..."
+              sudo apt-get update
+              sudo apt-get install -y docker.io
+            fi
+
+            if ! command -v docker-compose &> /dev/null; then
+              echo "Docker Compose not found, installing..."
+              sudo apt-get install -y docker-compose
+            fi
+
+            # 2) Lấy code mới nhất
+            cd ~
+            if [ ! -d "coffe-webite-project" ]; then
+              git clone --branch main https://github.com/imLeHuyHoang/coffee-website-project.git
+              cd coffee-website-project
+            else
+              cd coffee-website-project
+              git fetch origin
+              git checkout main
+              git pull origin main
+            fi
+
+            # 3) Dừng & xoá container cũ
+            sudo docker-compose down --rmi all --volumes --remove-orphans || true
+
+            # 4) Build & chạy lại container
+            sudo docker-compose up -d --build
+
+          EOF
