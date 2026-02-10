@@ -1,0 +1,64 @@
+# ==============================================================================
+# Terraform Variables Template
+# ==============================================================================
+# CACH SU DUNG (chon 1 trong 2):
+#
+# Cach 1 - Copy file nay:
+#   cp terraform.tfvars.example terraform.tfvars
+#   # Sua cac gia tri, roi chay: terraform apply
+#
+# Cach 2 - Dung environment-specific file:
+#   terraform apply -var-file="environments/dev.tfvars" -var="jwt_secret=..."
+# ==============================================================================
+
+# ==============================================================================
+# NAMING - Dat ten tai nguyen AWS
+# ==============================================================================
+# project_name la prefix chung, tu dong sinh ra ten cho tat ca tai nguyen:
+#
+#   | Tai nguyen    | Format                    | Vi du (project_name = "Coffee")  |
+#   |---------------|---------------------------|----------------------------------|
+#   | IAM Role      | {name}LambdaRole          | CoffeeLambdaRole                 |
+#   | IAM Policy    | {name}LambdaPolicy        | CoffeeLambdaPolicy               |
+#   | Lambda funcs  | {name}-get-products       | coffee-get-products (lowercase)  |
+#   | Lambda Layer  | {name}NodeModules         | CoffeeNodeModules                |
+#   | API Gateway   | {name}ShopAPI             | CoffeeShopAPI                    |
+#   | DynamoDB      | {name}Products/Orders/... | CoffeeProducts, CoffeeOrders     |
+#
+# S3 bucket names phai GLOBALLY UNIQUE tren toan AWS -> dat rieng.
+# ==============================================================================
+
+project_name         = "Coffee"                          # Prefix cho tat ca tai nguyen
+frontend_bucket_name = "coffee-shop-frontend-yourname"    # S3 frontend (globally unique!)
+images_bucket_name   = "coffee-shop-images-yourname"      # S3 images (globally unique!)
+
+# ==============================================================================
+# AWS CONFIGURATION
+# ==============================================================================
+
+aws_region = "ap-southeast-1"     # AWS Region
+stage_name = "prod"               # API Gateway stage: prod, dev, staging
+
+# ==============================================================================
+# SECURITY
+# ==============================================================================
+
+jwt_secret = "your-super-secret-jwt-key-change-this"  # It nhat 16 ky tu!
+
+# ==============================================================================
+# RESOURCE BEHAVIOR
+# ==============================================================================
+
+force_destroy      = true   # true (dev: xoa nhanh) / false (prod: bao ve)
+log_retention_days = 7      # 7 (dev) / 30 (prod)
+lambda_timeout     = 30     # Lambda timeout tinh bang giay
+lambda_memory_size = 128    # Lambda memory tinh bang MB
+
+# --- DynamoDB ---
+dynamodb_billing_mode         = "PAY_PER_REQUEST"  # PAY_PER_REQUEST (dev) / PROVISIONED (prod)
+enable_point_in_time_recovery = false               # false (dev) / true (prod)
+
+# --- S3 Images ---
+enable_versioning    = false   # false (dev) / true (prod)
+enable_lifecycle     = false   # false (dev) / true (prod)
+cors_allowed_origins = ["*"]   # ["*"] (dev) / ["https://domain.com"] (prod)
