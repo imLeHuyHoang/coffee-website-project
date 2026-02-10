@@ -5,6 +5,7 @@
 # --- Dependencies ---
 node_modules/
 package-lock.json
+**/package-lock.json
 
 # --- Build output ---
 dist/
@@ -46,10 +47,14 @@ Thumbs.db
 
 # --- Terraform (root .gitignore, chi backup) ---
 # Chi tiet trong terraform/.gitignore
-terraform/*.tfstate
-terraform/*.tfstate.*
-terraform/.terraform/
-terraform/*.zip
+*.tfstate
+*.tfstate.*
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.*
+terraform/*.tfplan
+terraform/tfplan
+**/*.tfplan
 
 # folder docs 
 docs/
