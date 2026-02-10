@@ -1,0 +1,52 @@
+/* Navbar Advertisement Styles */
+.navbar-advertising {
+  background: linear-gradient(90deg, #FF5722 0%, #F4511E 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.navbar-message {
+  flex: 1;
+  text-align: center;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.navbar-button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: transform 0.2s;
+}
+
+.navbar-button:hover {
+  transform: scale(1.2);
+}
+
+@media (max-width: 768px) {
+  .navbar-advertising {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .navbar-button {
+    font-size: 1rem;
+    padding: 0.3rem 0.6rem;
+  }
+}

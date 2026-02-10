@@ -1,12 +1,18 @@
 import React from "react";
 import "./App.css";
+import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
 import Routing from "./Routing";
 
 function App() {
   return (
-    <div className="App">
-      <Routing />
-    </div>
+    <AuthProvider>
+      <CartProvider>
+        <div className="App">
+          <Routing />
+        </div>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 
