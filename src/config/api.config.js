@@ -1,6 +1,7 @@
+// 
 // API Configuration
 const API_CONFIG = {
-  BASE_URL: 'https://wn7pg9kwgi.execute-api.ap-southeast-1.amazonaws.com/prod',
+  BASE_URL: import.meta.env.VITE_API_BASE_URL,
   ENDPOINTS: {
     // Orders
     ORDERS: '/orders',

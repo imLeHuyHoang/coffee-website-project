@@ -1,0 +1,9 @@
+{
+  "name": "coffee-lambda-layer",
+  "version": "1.0.0",
+  "description": "Shared dependencies for Coffee Shop Lambda functions (bcryptjs + jsonwebtoken)",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

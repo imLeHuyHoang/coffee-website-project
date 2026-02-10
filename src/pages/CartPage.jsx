@@ -8,45 +8,9 @@ import { orderSchema } from '../utils/validation';
 import { formatNumberToPrice } from '../utils/formatters';
 import orderService from '../services/orderService';
 import { Order } from '../models/Order';
+import { DEFAULT_PRODUCTS } from '../data/defaultProducts';
 import Confetti from 'react-confetti';
 import './CartPage.css';
-
-// Import default images
-import anh1 from '../assets/anh1.webp';
-import anh2 from '../assets/anh2.webp';
-import anh3 from '../assets/anh3.webp';
-import anh4 from '../assets/anh4.webp';
-
-const DEFAULT_PRODUCTS = [
-  {
-    productId: '1',
-    nameProduct: 'Default Route',
-    price: ['300.000 VND', '450.000 VND'],
-    imageUrl: anh1,
-    sizes: ['8OZ', '12OZ'],
-  },
-  {
-    productId: '2',
-    nameProduct: 'On-call',
-    price: ['300.000 VND', '450.000 VND'],
-    imageUrl: anh2,
-    sizes: ['8OZ', '12OZ'],
-  },
-  {
-    productId: '3',
-    nameProduct: '200 OK',
-    price: ['300.000 VND', '450.000 VND'],
-    imageUrl: anh3,
-    sizes: ['8OZ', '12OZ'],
-  },
-  {
-    productId: '4',
-    nameProduct: 'Sudo',
-    price: ['300.000 VND', '450.000 VND'],
-    imageUrl: anh4,
-    sizes: ['8OZ', '12OZ'],
-  },
-];
 
 const CartPage = () => {
   const navigate = useNavigate();
