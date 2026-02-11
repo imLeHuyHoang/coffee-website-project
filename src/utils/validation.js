@@ -41,24 +41,3 @@ export const loginSchema = z.object({
     .string()
     .min(1, 'Vui lòng nhập mật khẩu.'),
 });
-
-// Review validation schema
-export const reviewSchema = z.object({
-  rating: z
-    .number()
-    .min(1, 'Vui lòng chọn đánh giá.')
-    .max(5, 'Đánh giá tối đa 5 sao.'),
-  comment: z
-    .string()
-    .min(10, 'Nhận xét phải có ít nhất 10 ký tự.')
-    .max(500, 'Nhận xét không được vượt quá 500 ký tự.'),
-});
-
-// Product validation schema (Admin)
-export const productSchema = z.object({
-  nameProduct: z.string().min(1, 'Vui lòng nhập tên sản phẩm.'),
-  price: z.array(z.string()).min(1, 'Vui lòng nhập giá.'),
-  sizes: z.array(z.string()).min(1, 'Vui lòng nhập kích thước.'),
-  note: z.string().min(1, 'Vui lòng nhập mô tả.'),
-  imageUrl: z.string().url('URL hình ảnh không hợp lệ.').optional(),
-});

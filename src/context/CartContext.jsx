@@ -7,8 +7,31 @@ const CartContext = createContext(null);
 export const CartProvider = ({ children }) => {
   // Initialize cart from localStorage or empty array
   const [cart, setCart] = useState(() => {
-    const savedCart = localStorage.getItem('cart');
-    return savedCart ? JSON.parse(savedCart) : [];
+    try {
+      const savedCart = localStorage.getItem('cart');
+      if (!savedCart) return [];
+      
+      const parsedCart = JSON.parse(savedCart);
+      
+      // Validate cart structure
+      if (!Array.isArray(parsedCart)) {
+        console.warn('Invalid cart structure in localStorage, resetting...');
+        return [];
+      }
+      
+      // Validate each cart item
+      const validCart = parsedCart.map(item => {
+        if (!item || !item.quantities || !Array.isArray(item.quantities)) {
+          return { quantities: [0, 0] };
+        }
+        return item;
+      });
+      
+      return validCart;
+    } catch (error) {
+      console.error('Error loading cart from localStorage:', error);
+      return [];
+    }
   });
 
   // Save cart to localStorage whenever it changes
@@ -21,9 +44,18 @@ export const CartProvider = ({ children }) => {
    * @param {Array} products - Array of product objects
    */
   const initializeCart = (products) => {
-    if (cart.length === 0 && products.length > 0) {
-      const initialCart = products.map(() => ({ quantities: [0, 0] }));
-      setCart(initialCart);
+    if (!products || products.length === 0) return;
+    
+    // Always sync cart length with products length
+    if (cart.length !== products.length) {
+      const newCart = products.map((_, index) => {
+        // Keep existing cart item if valid, otherwise create new
+        if (cart[index] && cart[index].quantities) {
+          return cart[index];
+        }
+        return { quantities: [0, 0] };
+      });
+      setCart(newCart);
     }
   };
 
@@ -83,7 +115,7 @@ export const CartProvider = ({ children }) => {
    */
   const getTotalQuantity = () => {
     return cart.reduce((total, item) => {
-      if (item.quantities && Array.isArray(item.quantities)) {
+      if (item && item.quantities && Array.isArray(item.quantities)) {
         return total + item.quantities.reduce((sum, qty) => sum + qty, 0);
       }
       return total;
@@ -100,10 +132,11 @@ export const CartProvider = ({ children }) => {
 
     return cart.reduce((total, cartItem, productIndex) => {
       const product = products[productIndex];
-      if (!product || !cartItem.quantities) return total;
+      if (!product || !cartItem || !cartItem.quantities) return total;
 
       const itemTotal = cartItem.quantities.reduce((sum, qty, sizeIndex) => {
         const price = product.price[sizeIndex];
+        if (!price) return sum;
         const priceNumber = parsePriceToNumber(price);
         return sum + priceNumber * qty;
       }, 0);

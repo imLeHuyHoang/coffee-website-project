@@ -2,28 +2,25 @@
 import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import useProducts from '../hooks/useProducts';
 import Navbar from '../components/common/Navbar';
 import ProductList from '../components/product/ProductList';
-import LoadingSpinner from '../components/common/LoadingSpinner';
 import { DEFAULT_PRODUCTS } from '../data/defaultProducts';
 import './HomePage.css';
 
 const HomePage = () => {
   const navigate = useNavigate();
   const productListRef = useRef(null);
-  const { products: fetchedProducts, loading, error } = useProducts();
   const { initializeCart } = useCart();
 
-  // Use fetched products or fallback to default
-  const products = fetchedProducts.length > 0 ? fetchedProducts : DEFAULT_PRODUCTS;
+  // Use default products
+  const products = DEFAULT_PRODUCTS;
 
   // Initialize cart when products load
   useEffect(() => {
     if (products.length > 0) {
       initializeCart(products);
     }
-  }, [products]);
+  }, [products, initializeCart]);
 
   const handleShopCoffeeClick = () => {
     if (productListRef.current) {
@@ -59,9 +56,7 @@ const HomePage = () => {
           <p>Chọn từ những sản phẩm cà phê tuyệt vời nhất</p>
         </div>
 
-        {loading && <LoadingSpinner message="Đang tải sản phẩm..." />}
-        {error && <div className="error-box">Lỗi: {error}</div>}
-        {!loading && !error && <ProductList products={products} />}
+        <ProductList products={products} />
       </section>
 
       {/* Call to Action Section */}

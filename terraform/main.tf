@@ -144,6 +144,7 @@ module "api_gateway" {
   get_orders_invoke_arn    = module.lambda.get_orders_invoke_arn
   register_user_invoke_arn = module.lambda.register_user_invoke_arn
   login_user_invoke_arn    = module.lambda.login_user_invoke_arn
+  update_user_invoke_arn   = module.lambda.update_user_invoke_arn
 
   # Lambda function names (dung cho Lambda permission)
   get_products_function_name  = module.lambda.get_products_name
@@ -151,6 +152,7 @@ module "api_gateway" {
   get_orders_function_name    = module.lambda.get_orders_name
   register_user_function_name = module.lambda.register_user_name
   login_user_function_name    = module.lambda.login_user_name
+  update_user_function_name   = module.lambda.update_user_name
 
   tags = local.common_tags
 }

@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import useProducts from '../hooks/useProducts';
 import { orderSchema } from '../utils/validation';
 import { formatNumberToPrice } from '../utils/formatters';
 import orderService from '../services/orderService';
@@ -16,9 +15,8 @@ const CartPage = () => {
   const navigate = useNavigate();
   const { user, isLoggedIn } = useAuth();
   const { cart, getTotalQuantity, getTotalPrice, addToCart, removeFromCart, clearCart } = useCart();
-  const { products: fetchedProducts } = useProducts();
 
-  const products = fetchedProducts.length > 0 ? fetchedProducts : DEFAULT_PRODUCTS;
+  const products = DEFAULT_PRODUCTS;
 
   const [customerInfo, setCustomerInfo] = useState({
     name: user?.name || '',
@@ -41,6 +39,17 @@ const CartPage = () => {
 
   const handleSubmitOrder = async () => {
     setErrors([]);
+
+    // Check if user is logged in
+    if (!isLoggedIn()) {
+      const confirmLogin = window.confirm(
+        'Bạn cần đăng nhập để đặt hàng. Bạn có muốn chuyển đến trang đăng nhập không?'
+      );
+      if (confirmLogin) {
+        navigate('/login');
+      }
+      return;
+    }
 
     // Validate customer info
     const validationData = {
