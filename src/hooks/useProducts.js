@@ -1,4 +1,4 @@
-// Custom Hook: useProducts
+g// Custom Hook: useProducts
 import { useState, useEffect } from 'react';
 import productService from '../services/productService';
 

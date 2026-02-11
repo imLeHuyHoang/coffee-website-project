@@ -1,28 +1,7 @@
-# ==============================================================================
-# IAM Module - Lambda Execution Role & Policy
-# ==============================================================================
-# Doc goc: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
-# Doc goc: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy
-#
-# Module nay tao:
-#   1. IAM Role: cho phep Lambda service "assume" role nay
-#   2. IAM Policy: dinh nghia quyen cua Lambda (DynamoDB, CloudWatch, S3, SES)
-#   3. Attachment: gan policy vao role
-#
-# Kien thuc nen:
-#   - IAM Role = "danh tinh" (identity) voi cac quyen cu the
-#   - Trust Policy = "ai duoc phep dung role nay?" (o day la Lambda service)
-#   - Permission Policy = "role nay duoc lam gi?" (o day la truy cap DynamoDB, ghi log)
-# ==============================================================================
-
 # ------------------------------------------------------------------------------
 # 1. IAM Role cho Lambda
 # ------------------------------------------------------------------------------
 # Doc: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
-#
-# `assume_role_policy` (bat buoc): Trust policy - xac dinh service nao duoc assume role.
-# Format: JSON policy document voi "Principal" la service ARN.
-#
 # AWS doc ve Trust Policy:
 # https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html
 # ------------------------------------------------------------------------------
@@ -51,16 +30,6 @@ resource "aws_iam_role" "lambda_exec" {
 # 2. IAM Policy - Quyen truy cap cho Lambda
 # ------------------------------------------------------------------------------
 # Doc: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy
-#
-# Policy nay cap quyen:
-#   - DynamoDB: doc/ghi/query/scan/update/delete items trong cac table Coffee*
-#   - CloudWatch Logs: ghi logs de debug (bat buoc cho moi Lambda)
-#   - S3: doc/ghi objects trong bucket chua anh san pham
-#   - SES: gui email xac nhan don hang (su dung sau)
-#
-# Best Practice - Principle of Least Privilege:
-# https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege
-# Chi cap dung quyen can thiet, khong dung wildcard (*) cho Resource khi co the.
 # ------------------------------------------------------------------------------
 resource "aws_iam_policy" "lambda_policy" {
   name        = var.policy_name
@@ -71,7 +40,6 @@ resource "aws_iam_policy" "lambda_policy" {
     Statement = [
       # --- DynamoDB permissions ---
       # Cho phep Lambda doc/ghi du lieu trong cac DynamoDB tables
-      # Resource dung pattern "Coffee*" de match tat ca tables cua project
       {
         Sid    = "DynamoDBAccess"
         Effect = "Allow"
@@ -133,16 +101,10 @@ resource "aws_iam_policy" "lambda_policy" {
 }
 
 # ------------------------------------------------------------------------------
-# 3. Gan (attach) Policy vao Role
+# 3. Gan Policy vao Role
 # ------------------------------------------------------------------------------
 # Doc: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment
-#
-# Mot Role co the co nhieu Policies. O day ta attach:
-#   - CoffeeLambdaPolicy (custom policy vua tao)
-#
-# Luu y: AWS cung co managed policies nhu AWSLambdaBasicExecutionRole
-# nhung ta da dinh nghia CloudWatch Logs trong custom policy nen khong can.
-# ------------------------------------------------------------------------------
+
 resource "aws_iam_role_policy_attachment" "lambda_policy_attach" {
   role       = aws_iam_role.lambda_exec.name
   policy_arn = aws_iam_policy.lambda_policy.arn

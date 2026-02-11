@@ -43,6 +43,11 @@ variable "login_user_invoke_arn" {
   type        = string
 }
 
+variable "update_user_invoke_arn" {
+  description = "Invoke ARN cua update-user Lambda function"
+  type        = string
+}
+
 # --- Lambda Function Names ---
 # Dung cho Lambda Permission (resource-based policy)
 
@@ -68,6 +73,11 @@ variable "register_user_function_name" {
 
 variable "login_user_function_name" {
   description = "Ten cua login-user Lambda function"
+  type        = string
+}
+
+variable "update_user_function_name" {
+  description = "Ten cua update-user Lambda function"
   type        = string
 }
 

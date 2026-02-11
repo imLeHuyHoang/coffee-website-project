@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import useOrders from '../hooks/useOrders';
 import { formatDateTime, formatNumberToPrice } from '../utils/formatters';
-import { ORDER_STATUS_LABELS } from '../utils/constants';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import './OrderHistoryPage.css';
 
@@ -19,27 +18,21 @@ const OrderHistoryPage = () => {
     return null;
   }
 
-  const getStatusClass = (status) => {
-    const statusClasses = {
-      pending: 'status-pending',
-      processing: 'status-processing',
-      shipped: 'status-shipped',
-      delivered: 'status-delivered',
-      cancelled: 'status-cancelled',
-    };
-    return statusClasses[status] || '';
-  };
-
   return (
     <div className="order-history-page">
-      <h1>Lịch sử đơn hàng</h1>
+      <div className="page-header">
+        <h1>Lịch sử đơn hàng</h1>
+        <p className="page-subtitle">Xem lại các đơn hàng bạn đã đặt</p>
+      </div>
 
       {loading && <LoadingSpinner message="Đang tải đơn hàng..." />}
       {error && <div className="error-box">Lỗi: {error}</div>}
 
       {!loading && !error && orders.length === 0 && (
         <div className="no-orders">
-          <p>Bạn chưa có đơn hàng nào.</p>
+          <div className="no-orders-icon">📦</div>
+          <h2>Chưa có đơn hàng nào</h2>
+          <p>Bạn chưa đặt đơn hàng nào. Hãy khám phá các sản phẩm của chúng tôi!</p>
           <button onClick={() => navigate('/products')} className="btn-shop-now">
             Mua sắm ngay
           </button>
@@ -51,49 +44,77 @@ const OrderHistoryPage = () => {
           {orders.map((order) => (
             <div key={order.orderId} className="order-card">
               <div className="order-header">
-                <div>
-                  <h3>Đơn hàng #{order.orderId.slice(0, 8)}</h3>
-                  <p className="order-date">{formatDateTime(order.createdAt)}</p>
+                <div className="order-info">
+                  <h3 className="order-number">
+                    <span className="order-icon">🧾</span>
+                    Đơn hàng #{order.orderId.slice(0, 8).toUpperCase()}
+                  </h3>
+                  <p className="order-date">
+                    <span className="date-icon">📅</span>
+                    {formatDateTime(order.createdAt)}
+                  </p>
                 </div>
-                <span className={`order-status ${getStatusClass(order.status)}`}>
-                  {ORDER_STATUS_LABELS[order.status]}
-                </span>
               </div>
 
-              <div className="order-items">
-                {order.items.map((item, idx) => (
-                  <div key={idx} className="order-item">
-                    <strong>{item.nameProduct}</strong>
-                    <div className="order-item-variants">
-                      {item.variants
-                        .filter((v) => v.quantity > 0)
-                        .map((variant, vIdx) => (
-                          <span key={vIdx}>
-                            {variant.size}: {variant.quantity} x {variant.price}
-                          </span>
-                        ))}
+              <div className="order-body">
+                <div className="order-section">
+                  <h4 className="section-title">Sản phẩm đã đặt</h4>
+                  <div className="order-items">
+                    {order.items
+                      .filter((item) => item.variants.some((v) => v.quantity > 0))
+                      .map((item, idx) => (
+                        <div key={idx} className="order-item">
+                          <div className="item-header">
+                            <h5 className="item-name">{item.nameProduct}</h5>
+                          </div>
+                          <div className="item-variants">
+                            {item.variants
+                              .filter((v) => v.quantity > 0)
+                              .map((variant, vIdx) => (
+                                <div key={vIdx} className="variant-row">
+                                  <span className="variant-size">{variant.size}</span>
+                                  <span className="variant-quantity">x{variant.quantity}</span>
+                                  <span className="variant-price">{variant.price}</span>
+                                </div>
+                              ))}
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
+                <div className="order-section">
+                  <h4 className="section-title">Thông tin giao hàng</h4>
+                  <div className="customer-info">
+                    <div className="info-row">
+                      <span className="info-icon">👤</span>
+                      <span className="info-label">Người nhận:</span>
+                      <span className="info-value">{order.customerInfo.name}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-icon">📍</span>
+                      <span className="info-label">Địa chỉ:</span>
+                      <span className="info-value">{order.customerInfo.address}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-icon">📞</span>
+                      <span className="info-label">Số điện thoại:</span>
+                      <span className="info-value">{order.customerInfo.phone}</span>
                     </div>
                   </div>
-                ))}
+                </div>
               </div>
 
               <div className="order-footer">
-                <div className="order-customer">
-                  <p>
-                    <strong>Người nhận:</strong> {order.customerInfo.name}
-                  </p>
-                  <p>
-                    <strong>Địa chỉ:</strong> {order.customerInfo.address}
-                  </p>
-                  <p>
-                    <strong>SĐT:</strong> {order.customerInfo.phone}
-                  </p>
-                </div>
-                <div className="order-total">
-                  <p>Tổng số lượng: <strong>{order.totalQuantity}</strong></p>
-                  <p className="total-price">
-                    Tổng tiền: <strong>{formatNumberToPrice(order.totalPrice)}</strong>
-                  </p>
+                <div className="order-summary">
+                  <div className="summary-row">
+                    <span>Tổng số lượng:</span>
+                    <strong>{order.totalQuantity} sản phẩm</strong>
+                  </div>
+                  <div className="summary-row total">
+                    <span>Tổng tiền:</span>
+                    <strong className="total-amount">{formatNumberToPrice(order.totalPrice)}</strong>
+                  </div>
                 </div>
               </div>
             </div>

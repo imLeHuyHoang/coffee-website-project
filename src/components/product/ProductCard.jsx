@@ -59,13 +59,6 @@ const ProductCard = ({ product, productIndex }) => {
                   + {size}
                 </button>
               ))}
-              <Link
-                to={`/products/${product.productId}`}
-                className="btn-view-detail"
-                onClick={(e) => e.stopPropagation()}
-              >
-                Xem chi tiết
-              </Link>
             </div>
           </div>
         )}

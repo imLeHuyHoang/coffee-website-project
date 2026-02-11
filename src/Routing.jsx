@@ -9,6 +9,7 @@ import OrderHistoryPage from "./pages/OrderHistoryPage";
 import ProfilePage from "./pages/ProfilePage";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function Routing() {
   return (
@@ -23,6 +24,7 @@ function Routing() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
       <Footer />

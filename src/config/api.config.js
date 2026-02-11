@@ -1,19 +1,9 @@
-// 
-// API Configuration
 const API_CONFIG = {
   BASE_URL: import.meta.env.VITE_API_BASE_URL,
   ENDPOINTS: {
     // Orders
     ORDERS: '/orders',
     ORDER_BY_ID: (id) => `/orders/${id}`,
-    
-    // Products
-    PRODUCTS: '/products',
-    PRODUCT_BY_ID: (id) => `/products/${id}`,
-    
-    // Reviews
-    REVIEWS: '/reviews',
-    REVIEWS_BY_PRODUCT: (productId) => `/reviews?productId=${productId}`,
     
     // Auth
     LOGIN: '/auth/login',

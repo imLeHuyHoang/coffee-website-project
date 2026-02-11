@@ -1,12 +1,3 @@
-# ==============================================================================
-# S3 Frontend Module Outputs
-# ==============================================================================
-# Cac gia tri nay se duoc dung boi:
-#   - Root module: de hien thi URL website sau khi terraform apply
-#   - API Gateway module: de cau hinh CORS Allow-Origin (neu can)
-#   - CI/CD pipeline: de biet bucket name cho `aws s3 sync`
-# ==============================================================================
-
 output "bucket_name" {
   description = "Ten cua S3 bucket"
   value       = aws_s3_bucket.frontend.id

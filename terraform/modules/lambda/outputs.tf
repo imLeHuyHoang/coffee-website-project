@@ -1,14 +1,3 @@
-# ==============================================================================
-# Lambda Module Outputs
-# ==============================================================================
-# Cac output nay duoc API Gateway module su dung de:
-#   1. Tao integration giua API method va Lambda function
-#   2. Tao lambda permission cho phep API Gateway invoke function
-# ==============================================================================
-
-# --- Function ARNs ---
-# Dung cho API Gateway integration (chi dinh function nao xu ly request nao)
-
 output "get_products_arn" {
   description = "ARN cua get-products function"
   value       = aws_lambda_function.get_products.arn
@@ -34,8 +23,10 @@ output "login_user_arn" {
   value       = aws_lambda_function.login_user.arn
 }
 
-# --- Function Names ---
-# Dung cho API Gateway lambda permission (resource-based policy)
+output "update_user_arn" {
+  description = "ARN cua update-user function"
+  value       = aws_lambda_function.update_user.arn
+}
 
 output "get_products_name" {
   description = "Ten cua get-products function"
@@ -62,9 +53,10 @@ output "login_user_name" {
   value       = aws_lambda_function.login_user.function_name
 }
 
-# --- Invoke ARNs ---
-# Format dac biet cua ARN dung cho API Gateway integration URI
-# Doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
+output "update_user_name" {
+  description = "Ten cua update-user function"
+  value       = aws_lambda_function.update_user.function_name
+}
 
 output "get_products_invoke_arn" {
   description = "Invoke ARN cua get-products (dung cho API Gateway integration)"
@@ -84,6 +76,11 @@ output "get_orders_invoke_arn" {
 output "register_user_invoke_arn" {
   description = "Invoke ARN cua register-user"
   value       = aws_lambda_function.register_user.invoke_arn
+}
+
+output "update_user_invoke_arn" {
+  description = "Invoke ARN cua update-user"
+  value       = aws_lambda_function.update_user.invoke_arn
 }
 
 output "login_user_invoke_arn" {
