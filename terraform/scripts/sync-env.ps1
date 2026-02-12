@@ -106,3 +106,4 @@ Write-Host ""
 Write-Host "  3. Truy cap website:" -ForegroundColor White
 Write-Host "     $websiteUrl" -ForegroundColor Yellow
 Write-Host ""
+# aws s3 sync dist/ s3://coffee-shop-frontend-hoangcon --delete --cache-control "no-cache, no-store, must-revalidate"

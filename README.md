@@ -14,7 +14,7 @@ Coffee Shop là một ứng dụng web thương mại điện tử hiện đại
 
 ## Kiến trúc hệ thống
 
-![Architecture Diagram](./docs/images/architecture.png)
+![Architecture Diagram](./src/assets/architecture.png)
 
 ### Tech Stack
 

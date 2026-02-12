@@ -55,6 +55,6 @@ Thumbs.db
 terraform/*.tfplan
 terraform/tfplan
 **/*.tfplan
-
+terraform.tfvars.example
 # folder docs 
 docs/

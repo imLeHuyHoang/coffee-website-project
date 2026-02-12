@@ -1,12 +1,3 @@
-# ==============================================================================
-# Terraform Provider Configuration
-# ==============================================================================
-# Doc: https://registry.terraform.io/providers/hashicorp/aws/latest/docs
-#
-# Provider "aws" cho phep Terraform giao tiep voi AWS API.
-# "archive" dung de dong goi Lambda source code thanh .zip truoc khi upload.
-# ==============================================================================
-
 terraform {
   required_version = ">= 1.6.0"
 
