@@ -1,15 +1,3 @@
-# ==============================================================================
-# Root Outputs
-# ==============================================================================
-# Doc: https://developer.hashicorp.com/terraform/language/values/outputs
-#
-# Outputs hien thi gia tri quan trong sau khi terraform apply.
-# Cac gia tri nay cung co the duoc doc boi:
-#   - Cac Terraform configurations khac (remote state)
-#   - CI/CD scripts (terraform output -raw api_url)
-#   - Nguoi dung (copy URL de cau hinh frontend)
-# ==============================================================================
-
 # --- API Gateway ---
 output "api_url" {
   description = "URL cua API Gateway (dung cho VITE_API_BASE_URL)"
@@ -44,7 +32,7 @@ output "lambda_layer_arn" {
   value       = module.lambda_layer.layer_arn
 }
 
-# --- DynamoDB (Part 2) ---
+# --- DynamoDB ---
 output "dynamodb_table_names" {
   description = "Map cac DynamoDB table names"
   value       = module.dynamodb.table_names
@@ -55,7 +43,7 @@ output "dynamodb_table_arns" {
   value       = module.dynamodb.table_arns
 }
 
-# --- S3 Images (Part 2) ---
+# --- S3 Images ---
 output "images_bucket_name" {
   description = "Ten S3 bucket chua product images"
   value       = module.s3_images.bucket_name

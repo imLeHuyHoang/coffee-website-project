@@ -27,10 +27,9 @@ export const USER_ROLES = {
 };
 
 export const ADVERTISEMENT_MESSAGES = [
-  "Shop now before it's too late :)",
-  "Free shipping on orders above 500.000 VND",
-  "New collection coming soon!",
-  "Get a free coffee on your birthday!",
+  "Hãy mua nhanh khi còn có thể :)",
+  "Miễn phí vận chuyển cho đơn hàng trên 500.000 VND",
+  "Nhận một ly cà phê miễn phí vào ngày sinh nhật của bạn!",
 ];
 
 export const VALIDATION_RULES = {

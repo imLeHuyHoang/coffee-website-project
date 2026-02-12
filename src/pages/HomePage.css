@@ -1,6 +1,8 @@
 /* HomePage Styles */
 .banner-section {
-  background: url('../assets/Background.avif') center/cover no-repeat;
+  background: url('../assets/bg3.jpg') center no-repeat;
+  background-size: 100% auto;
+  background-color: #3E2723;
   min-height: 500px;
   display: flex;
   align-items: center;

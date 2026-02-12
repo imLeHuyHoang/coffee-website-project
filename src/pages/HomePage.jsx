@@ -41,7 +41,7 @@ const HomePage = () => {
         <div className="banner">
           <h1 className="banner-title">COFFEE, RIGHT NOW</h1>
           <p className="banner-subtitle">
-            Thưởng thức cà phê chất lượng cao từ những hạt được chọn lọc kỹ càng
+            Thưởng thức cà phê chất lượng cao được chọn lọc kỹ càng
           </p>
           <button className="btn-banner" onClick={handleShopCoffeeClick}>
             KHÁM PHÁ NGAY

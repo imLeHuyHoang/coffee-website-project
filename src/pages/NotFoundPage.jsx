@@ -12,7 +12,7 @@ const NotFoundPage = () => {
         <h1 className="not-found-title">404</h1>
         <h2 className="not-found-subtitle">Không tìm thấy trang</h2>
         <p className="not-found-message">
-          Xin lỗi, trang bạn đang tìm kiếm không tồn tại hoặc đã bị di chuyển.
+          Xin lỗi, trang bạn đang tìm kiếm không tồn tại.
         </p>
         <div className="not-found-actions">
           <button onClick={() => navigate('/')} className="btn-home">
